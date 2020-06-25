@@ -1,11 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"github.com/ethereum/go-ethereum/ethclient"
 )
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
@@ -24,13 +25,20 @@ func getTransAction(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	client, err := ethclient.Dial("https://mainnet.infura.io")
+	// Connect to ethereum network through infura
+	client, err := ethclient.Dial("https://mainnet.infura.io/v3/b1e85ed87262471ea8ce2fd3e6d2f7c8")
 	if err != nil {
 		log.Fatalf("Unable to connect")
 	}
 	_ = client
 	fmt.Println("Successfully connected to Infura/Ethereum")
 
+	account := common.HexToAddress("0x742d35cc6634c0532925a3b844bc454e4438f44e")
+	balance, err := client.BalanceAt(context.Background(), account, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("The balance of this ethereum address is: %s ether \n", balance)
 	router := mux.NewRouter().StrictSlash(true)
 
 	// @Travis: Declare what our "/" endpoint will do.
