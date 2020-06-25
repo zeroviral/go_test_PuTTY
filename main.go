@@ -3,15 +3,24 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"github.com/gorilla/mux"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/common"
 )
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusCreated)
 	fmt.Fprint(w, "Welcome to the HomePage.")
+}
+
+// ENDPOINT: ("/get_transaction")
+// ACCEPTS: GET
+func getTransAction(w http.ResponseWriter, r *http.Request) {
+	// TODO: Fill in the code for sourcing transaction from Ethereum
+
+	// blah blah blah
+	w.WriteHeader(200)
 }
 
 func main() {
@@ -33,6 +42,7 @@ func main() {
 
 	// @Travis: Declare what our "/" endpoint will do.
 	router.HandleFunc("/", homeLink)
+	router.HandleFunc("/get_transaction", getTransAction)
 	fmt.Println("Congrats, the build ran Successfully!")
 	fmt.Println("Now running server on 8080...")
 
