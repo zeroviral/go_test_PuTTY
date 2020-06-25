@@ -10,6 +10,7 @@ import (
 
 func homeLink(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
+	fmt.Fprint(w, "hello\n")
 	fmt.Fprint(w, "Welcome to the HomePage.")
 }
 
