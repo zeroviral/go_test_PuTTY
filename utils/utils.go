@@ -1,7 +1,11 @@
 package utils
 
 import (
+	"context"
+	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"log"
 	"sync"
 	"sync/atomic"
 )
@@ -38,4 +42,18 @@ func GetClientInstance() (*ethclient.Client, error) {
 	}
 
 	return singletonInstance, nil
+}
+
+// Helper method for sourcing an ethereum transaction using an ID.
+func GetBalanceByTransactionID(account common.Address) string {
+	client, err := GetClientInstance()
+	if err != nil {
+		LogError.Println("Can't connect: " + err.Error())
+	}
+	balance, err := client.BalanceAt(context.Background(), account, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	returnString := fmt.Sprintf("%s", balance)
+	return returnString
 }
