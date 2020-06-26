@@ -4,24 +4,40 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"go_test_PuTTY/endpoints"
-	"go_test_PuTTY/utils"
 	"log"
 	"net/http"
+	"sync"
 )
+
+var once sync.Once
+
+type singleton map[string] string
+
+var (
+	ourInstance singleton
+)
+
+func connect() singleton {
+	once.Do(func() {
+		ourInstance = make(singleton)
+	})
+		return ourInstance
+}
 
 func main() {
 
-	connectionURL := "https://mainnet.infura.io/v3/b1e85ed87262471ea8ce2fd3e6d2f7c8"
+	//connectionURL := "https://mainnet.infura.io/v3/b1e85ed87262471ea8ce2fd3e6d2f7c8"
 
 	// Connect to ethereum network through infura
-	utils.ConnectClient(connectionURL)
+	//ourClient := utils.ConnectClient(connectionURL)
 
 	router := mux.NewRouter().StrictSlash(true)
 
+	//_ = ourClient
 	// Add our endpoints here.
-	router.HandleFunc("/", endpoints.HomeLink)
-	router.HandleFunc("/get_transaction", endpoints.GetTransAction)
-	router.HandleFunc("/test_endpoint", endpoints.TestTransaction)
+	router.HandleFunc("/", endpoints.Index)
+	router.HandleFunc("/get_transaction", endpoints.GetTransaction)
+	router.HandleFunc("/test_endpoint", endpoints.GetTransaction)
 
 
 	fmt.Println("Congrats, the build ran Successfully!")

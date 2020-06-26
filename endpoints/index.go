@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-func HomeLink(w http.ResponseWriter, r *http.Request) {
+// Serve a simple yet effective index.
+func Index(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
-	fmt.Fprint(w, "hello\n")
 	fmt.Fprint(w, "Welcome to the HomePage.")
 }
