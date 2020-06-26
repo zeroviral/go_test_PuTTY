@@ -11,7 +11,6 @@ type EthereumRequest struct {
 type EthereumRequestList []EthereumRequest
 
 type EthereumResponse struct {
-
 	EthereumId string `json:"eID"`
 	Message    string `json:"message"`
 }
