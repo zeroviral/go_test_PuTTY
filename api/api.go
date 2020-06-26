@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterRoutes(router *mux.Router) {
-	router.HandleFunc("/", controllers.Index)
+	router.HandleFunc("/", controllers.HealthCheck)
 	router.HandleFunc("/transactions", controllers.GetCurrentEthBalance)
 	router.HandleFunc("/test_endpoint", controllers.GetCurrentEthBalance)
 }
