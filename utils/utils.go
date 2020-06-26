@@ -5,11 +5,12 @@ import (
 	"sync"
 	"sync/atomic"
 )
+
 var singletonInstance *ethclient.Client
 var atomicFlag uint64
 var lock = &sync.Mutex{}
 
-func ConnectClient() (*ethclient.Client, error) {
+func GetClientInstance() (*ethclient.Client, error) {
 
 	// Guarantee uniqueness
 	if atomic.LoadUint64(&atomicFlag) == 1 {

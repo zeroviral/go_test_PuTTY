@@ -17,7 +17,7 @@ import (
 func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Request) {
 
 	// First connect
-	utils.ConnectClient()
+	utils.GetClientInstance()
 
 	var ethereumRequest resources.EthereumRequest
 
@@ -48,7 +48,7 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 // Helper method for sourcing an ethereum transaction using an ID.
 func getBalanceByTransactionID(account common.Address) string {
 
-	client, err := utils.ConnectClient()
+	client, err := utils.GetClientInstance()
 	if err != nil {
 		utils.LogError.Println("Can't connect: " + err.Error())
 	}
