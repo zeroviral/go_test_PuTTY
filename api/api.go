@@ -7,6 +7,6 @@ import (
 
 func RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/", controllers.Index)
-	router.HandleFunc("/transactions", controllers.GetTransaction)
-	router.HandleFunc("/test_endpoint", controllers.GetTransaction)
+	router.HandleFunc("/transactions", controllers.GetCurrentEthBalance)
+	router.HandleFunc("/test_endpoint", controllers.GetCurrentEthBalance)
 }

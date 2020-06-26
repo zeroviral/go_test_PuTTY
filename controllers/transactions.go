@@ -14,7 +14,7 @@ import (
 
 // ENDPOINT: ("/get_transaction")
 // ACCEPTS: GET
-func GetTransaction(h http.ResponseWriter, req *http.Request) {
+func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
 	// validate current request
 	validRequest := validators.ValidateAddress(req)
 	// convert to correct format
