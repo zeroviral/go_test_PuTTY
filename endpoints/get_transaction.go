@@ -20,7 +20,7 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 	// First connect
 	utils.ConnectClient()
 
-	var ethereum_ID resources.EthereumRequest
+	var ethereumRequest resources.EthereumRequest
 
 	// This is where we read the request, and deserialize into a 'slice'
 	// This makes it human-readable.
@@ -30,18 +30,18 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 		utils.LogError.Println("ERROR! You're not adhering to the schema. Can you read bro? ERROR: " + err.Error())
 	}
 	// Unpack the slice into a string.
-	json.Unmarshal(requestBody, &ethereum_ID)
+	json.Unmarshal(requestBody, &ethereumRequest)
 
 	// Set our account ID.
-	account := common.HexToAddress(ethereum_ID.EthereumId)
+	account := common.HexToAddress(ethereumRequest.EthereumId)
 
 	balance := getBalanceByTransactionID(account)
-	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", ethereum_ID)
+	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", ethereumRequest)
 	responseObject.WriteHeader(http.StatusCreated)
 
 
 	var ourResponse resources.EthereumResponse
-	ourResponse.EthereumId = ethereum_ID.EthereumId
+	ourResponse.EthereumId = ethereumRequest.EthereumId
 	ourResponse.Message = fmt.Sprintf("The current Ethereum balance is: %s", balance)
 	// Finally, write the new payload to the response object.
 	json.NewEncoder(responseObject).Encode(ourResponse)
