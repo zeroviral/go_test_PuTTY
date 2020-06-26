@@ -45,7 +45,7 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 	account := common.HexToAddress(ethereum_ID.Ethereum_ID)
 
 	enterTransactionID(account)
-	fmt.Printf("The received ethereum request ID is: [ %s ]\n", ethereum_ID)
+	log.Printf("The received ethereum request ID is: [ %s ]\n", ethereum_ID)
 	responseObject.WriteHeader(http.StatusCreated)
 
 	// Finally, write the new payload to the response object.
@@ -63,5 +63,5 @@ func enterTransactionID(account common.Address) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("The balance of this ethereum address is: %s ether \n", balance)
+	log.Printf("The balance of this ethereum address is: %s ether \n", balance)
 }

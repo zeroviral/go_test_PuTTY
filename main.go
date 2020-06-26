@@ -1,47 +1,35 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"go_test_PuTTY/endpoints"
 	"log"
 	"net/http"
-	"sync"
+	"os"
 )
 
-var once sync.Once
-
-type singleton map[string] string
-
-var (
-	ourInstance singleton
-)
-
-func connect() singleton {
-	once.Do(func() {
-		ourInstance = make(singleton)
-	})
-		return ourInstance
-}
+var LogDir = "resources/logs/info.log"
 
 func main() {
 
-	//connectionURL := "https://mainnet.infura.io/v3/b1e85ed87262471ea8ce2fd3e6d2f7c8"
+	// Logger file output stuff.
+	file, err := os.OpenFile(LogDir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+	defer file.Close()
 
-	// Connect to ethereum network through infura
-	//ourClient := utils.ConnectClient(connectionURL)
+	//log.SetOutput(file)
 
 	router := mux.NewRouter().StrictSlash(true)
 
-	//_ = ourClient
 	// Add our endpoints here.
 	router.HandleFunc("/", endpoints.Index)
 	router.HandleFunc("/get_transaction", endpoints.GetTransaction)
 	router.HandleFunc("/test_endpoint", endpoints.GetTransaction)
 
-
-	fmt.Println("Congrats, the build ran Successfully!")
-	fmt.Println("Now running server on 8080...")
+	log.Print("Started PuTTY server [ SUCCESSFULLY ]")
+	log.Print("Now running PuTTY on 8080...")
 
 	// @Travis: Log all requests from -> Server started at port 8080, localhost.
 	// Uses router declaration as the "servlet" equivalent
