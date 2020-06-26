@@ -1,9 +1,7 @@
 package utils
 
 import (
-	"fmt"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"log"
 	"sync"
 	"sync/atomic"
 )
@@ -27,11 +25,12 @@ func ConnectClient() (*ethclient.Client, error) {
 
 		client, err := ethclient.Dial(url)
 		if err != nil {
-			log.Fatalf("Can't connect")
+			LogError.Println("Can't connect")
+
 		}
 
 		singletonInstance = client
-		fmt.Println("Successfully connected to Infura/Ethereum")
+		LogInfo.Println("Successfully connected to Infura/Ethereum")
 
 		// Set our atomic flag the first time
 		atomic.StoreUint64(&atomicFlag, 1)

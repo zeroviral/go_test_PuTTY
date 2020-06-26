@@ -3,12 +3,11 @@ package endpoints
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/ethereum/go-ethereum/common"
+	"go_test_PuTTY/utils"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"go_test_PuTTY/utils"
 )
 
 // This will conform our request structure.
@@ -36,7 +35,7 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 	requestBody, err := ioutil.ReadAll(requestObject.Body)
 
 	if err != nil {
-		fmt.Fprint(responseObject, "ERROR! You're not adhering to the schema. Can you read bro?")
+		utils.LogError.Println("ERROR! You're not adhering to the schema. Can you read bro? ERROR: " + err.Error())
 	}
 	// Unpack the slice into a string.
 	json.Unmarshal(requestBody, &ethereum_ID)
@@ -45,7 +44,7 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 	account := common.HexToAddress(ethereum_ID.Ethereum_ID)
 
 	enterTransactionID(account)
-	log.Printf("The received ethereum request ID is: [ %s ]\n", ethereum_ID)
+	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", ethereum_ID)
 	responseObject.WriteHeader(http.StatusCreated)
 
 	// Finally, write the new payload to the response object.
@@ -57,11 +56,11 @@ func enterTransactionID(account common.Address) {
 
 	client, err := utils.ConnectClient()
 	if err != nil {
-		log.Fatalf("Can't connect")
+		utils.LogError.Println("Can't connect: " + err.Error())
 	}
 	balance, err := client.BalanceAt(context.Background(), account, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("The balance of this ethereum address is: %s ether \n", balance)
+	utils.LogInfo.Printf("The balance of the ethereum address is: %s ether", balance)
 }
