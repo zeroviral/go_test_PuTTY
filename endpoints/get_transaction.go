@@ -3,22 +3,14 @@ package endpoints
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"go_test_PuTTY/utils"
+	"go_test_PuTTY/resources"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
-
-// This will conform our request structure.
-type ethereum_request struct {
-
-	// The field that will be accepted on the left, and the right is the response formatted fields.
-	Ethereum_ID string `json:"ethereum_ID"`
-}
-
-// This holds our definition of a list that can hold multiple ethereum request.
-type eth_req_list []ethereum_request
 
 
 // ENDPOINT: ("/get_transaction")
@@ -28,7 +20,7 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 	// First connect
 	utils.ConnectClient()
 
-	var ethereum_ID ethereum_request
+	var ethereum_ID resources.EthereumRequest
 
 	// This is where we read the request, and deserialize into a 'slice'
 	// This makes it human-readable.
@@ -41,18 +33,22 @@ func GetTransaction(responseObject http.ResponseWriter, requestObject *http.Requ
 	json.Unmarshal(requestBody, &ethereum_ID)
 
 	// Set our account ID.
-	account := common.HexToAddress(ethereum_ID.Ethereum_ID)
+	account := common.HexToAddress(ethereum_ID.EthereumId)
 
-	enterTransactionID(account)
+	balance := getBalanceByTransactionID(account)
 	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", ethereum_ID)
 	responseObject.WriteHeader(http.StatusCreated)
 
+
+	var ourResponse resources.EthereumResponse
+	ourResponse.EthereumId = ethereum_ID.EthereumId
+	ourResponse.Message = fmt.Sprintf("The current Ethereum balance is: %s", balance)
 	// Finally, write the new payload to the response object.
-	json.NewEncoder(responseObject).Encode(ethereum_ID)
+	json.NewEncoder(responseObject).Encode(ourResponse)
 }
 
 // Helper method for sourcing an ethereum transaction using an ID.
-func enterTransactionID(account common.Address) {
+func getBalanceByTransactionID(account common.Address) string {
 
 	client, err := utils.ConnectClient()
 	if err != nil {
@@ -62,5 +58,6 @@ func enterTransactionID(account common.Address) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	utils.LogInfo.Printf("The balance of the ethereum address is: %s ether", balance)
+	returnString := fmt.Sprintf("%s", balance)
+	return returnString
 }
