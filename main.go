@@ -18,9 +18,12 @@ func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
 
-	// @Travis: Declare what our "/" endpoint will do.
+	// Add our endpoints here.
 	router.HandleFunc("/", endpoints.HomeLink)
 	router.HandleFunc("/get_transaction", endpoints.GetTransAction)
+	router.HandleFunc("/test_endpoint", endpoints.TestTransaction)
+
+
 	fmt.Println("Congrats, the build ran Successfully!")
 	fmt.Println("Now running server on 8080...")
 
