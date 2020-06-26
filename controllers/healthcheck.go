@@ -8,27 +8,27 @@ import (
 )
 
 type HealthCheckResponse struct {
-	name    string
-	version float64
-	commit  string
-	host    string
+	Name    string  `json:"name"`
+	Version float64 `json:"version"`
+	Commit  string  `json:"commit"`
+	Host    string  `json:"host"`
 }
 
 // HealthCheck Endpoint
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	cfg := config.CreateConfiguration()
 	resp := HealthCheckResponse{
-		name:    cfg.App.Name,
-		version: cfg.App.Version,
-		commit:  "Commit hash",
-		host:    cfg.Server.Host,
+		Name:    cfg.App.Name,
+		Version: cfg.App.Version,
+		Commit:  "Commit hash",
+		Host:    cfg.Server.Host,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	fmt.Printf("%v", resp)
-	respJSON, err := json.Marshal(resp)
-	if err != nil {
-		// handle error
-	}
-	w.Write(respJSON)
+	//respJSON, err := json.Marshal(resp)
+	//if err != nil {
+	//	// handle error
+	//}
+	json.NewEncoder(w).Encode(resp)
 }
