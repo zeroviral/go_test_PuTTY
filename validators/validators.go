@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func ValidateAddress(req *http.Request) *resources.EthereumRequest {
+func GetCurrentEthBalance(req *http.Request) *resources.EthereumRequest {
 	var validRequest resources.EthereumRequest
 	body, _ := ioutil.ReadAll(req.Body)
 	if err := json.Unmarshal(body, validRequest); err != nil {

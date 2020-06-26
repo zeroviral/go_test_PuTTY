@@ -14,7 +14,7 @@ import (
 // ACCEPTS: GET
 func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
 	// validate current request
-	validRequest := validators.ValidateAddress(req)
+	validRequest := validators.GetCurrentEthBalance(req)
 	// convert to correct format
 	account := common.HexToAddress(validRequest.EthereumId)
 	// get balance
