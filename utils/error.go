@@ -5,11 +5,6 @@ import (
 	"fmt"
 )
 
-type Error struct {
-	message string "message:"
-	Data    interface{}
-}
-
 type HTTPError struct {
 	Cause   error  `json:"-"`
 	Status  int    `json:"-"`
