@@ -18,7 +18,7 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 	// First, validate that it's even a GET request.
 	if !validators.ValidateRequestAction(h, req, `GET`) {
 		errMsg := "could not validate request at /transactions "
-		return errors.New(": "+ errMsg)
+		return errors.New(errMsg)
 	}
 
 	// validate current request
