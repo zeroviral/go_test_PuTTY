@@ -15,7 +15,7 @@ type HealthCheckResponse struct {
 }
 
 // HealthCheck Endpoint
-func HealthCheck(w http.ResponseWriter, r *http.Request) {
+func HealthCheck(w http.ResponseWriter, r *http.Request) error {
 	cfg := config.CreateConfiguration()
 	resp := HealthCheckResponse{
 		Name:    cfg.App.Name,
@@ -27,4 +27,5 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	fmt.Printf("%v", resp)
 	json.NewEncoder(w).Encode(resp)
+	return nil
 }

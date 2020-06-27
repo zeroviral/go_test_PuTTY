@@ -10,6 +10,7 @@ import (
 
 type rootHandler func(http.ResponseWriter, *http.Request) error
 
+// This root handler wraps all handlers to provide global error handling logic.
 func (fn rootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := fn(w, r)
 	if err == nil {
@@ -37,7 +38,7 @@ func (fn rootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func RegisterRoutes(router *mux.Router) {
-	router.HandleFunc("/", controllers.HealthCheck)
+	router.Handle("/health", rootHandler(controllers.HealthCheck))
 	router.Handle("/transactions", rootHandler(controllers.GetCurrentEthBalance))
 	//router.HandleFunc("/test_endpoint", controllers.GetCurrentEthBalance)
 }
