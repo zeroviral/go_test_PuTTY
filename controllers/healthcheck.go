@@ -18,7 +18,7 @@ type HealthCheckResponse struct {
 // HealthCheck Endpoint
 func HealthCheck(w http.ResponseWriter, r *http.Request) error {
 	if !validators.ValidateRequestAction(w, r, "GET") {
-		errMsg := "could not validate request at /transactions "
+		errMsg := "could not validate request at /health "
 		return errors.New(errMsg)
 	}
 	cfg := config.CreateConfiguration()
