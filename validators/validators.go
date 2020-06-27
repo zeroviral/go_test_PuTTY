@@ -8,11 +8,11 @@ import (
 	"net/http"
 )
 
-func GetCurrentEthBalance(req *http.Request) *resources.EthereumRequest {
+func GetCurrentEthBalance(req *http.Request) resources.EthereumRequest {
 	var validRequest resources.EthereumRequest
 	body, _ := ioutil.ReadAll(req.Body)
-	if err := json.Unmarshal(body, validRequest); err != nil {
+	if err := json.Unmarshal(body, &validRequest); err != nil {
 		utils.LogError.Println("Invalid Request Format. Unable to unmarshal JSON.")
 	}
-	return &validRequest
+	return validRequest
 }

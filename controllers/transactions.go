@@ -19,7 +19,7 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
 	account := common.HexToAddress(validRequest.EthereumId)
 	// get balance
 	balance := utils.GetBalanceByTransactionID(account)
-	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", validRequest)
+	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", validRequest.EthereumId)
 	response := resources.EthereumResponse{
 		EthereumId: validRequest.EthereumId,
 		Message:    fmt.Sprintf("The current Etehreum balance is %s", balance),
