@@ -34,7 +34,7 @@ func Init() {
 		"WARNING: ",
 		log.Ldate|log.Ltime)
 
-	LogError = log.New(os.Stderr,
+	LogError = log.New(os.Stdout,
 		"ERROR: ",
 		log.Ldate|log.Ltime)
 
