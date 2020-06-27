@@ -7,7 +7,8 @@ import (
 	"os"
 )
 
-var logDir = "resources/logs/errors.log"
+var errorLogdir = "resources/logs/errors.log"
+var infoLogDir = "resources/logs/info.log"
 
 var (
 	LogTrace   *log.Logger
@@ -19,7 +20,8 @@ var (
 func Init() {
 
 	// Logger logFile output stuff.
-	logFile, err := os.OpenFile(logDir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	logErrorFile, err := os.OpenFile(errorLogdir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	logInfoFile, err := os.OpenFile(infoLogDir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,6 +44,9 @@ func Init() {
 	// The errors will go to the log file for review on failures.
 	// TODO: Add a rotating file handler to handle max size overflow later...
 	// Output log errors to both STDOUT and file for review.
-	multiWriter := io.MultiWriter(os.Stdout, logFile)
-	LogError.SetOutput(multiWriter)
+	multiWriterERROR := io.MultiWriter(os.Stdout, logErrorFile)
+	multiWriterINFO := io.MultiWriter(os.Stdout, logInfoFile)
+
+	LogError.SetOutput(multiWriterERROR)
+	LogInfo.SetOutput(multiWriterINFO)
 }
