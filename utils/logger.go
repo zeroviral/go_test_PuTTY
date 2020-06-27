@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var logDir = "resources/info.log"
+var logDir = "resources/logs/errors.log"
 
 var (
 	LogTrace   *log.Logger

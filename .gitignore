@@ -1,3 +1,4 @@
 .idea
-resources/info.log
+*.log
 go_test_PuTTY
+*.bin
