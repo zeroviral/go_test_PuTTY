@@ -16,7 +16,7 @@ func main() {
 	api.RegisterRoutes(router)
 	router.Use(utils.LogRequestMetaData)
 	utils.LogInfo.Printf("Started %s version %.2f successfully. Running on port %s...", cfg.App.Name, cfg.App.Version, cfg.Server.Port)
-	// @Travis: Log all requests from -> Server started at port 8080, localhost.
+	// 06/27/2020 @Travis: Log all requests from -> Server started at whatever port. For now we'll use localhost.
 	// Uses router declaration as the "servlet" equivalent
 	utils.LogError.Println(http.ListenAndServe(cfg.Server.Port, router))
 }
