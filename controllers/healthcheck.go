@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go_test_PuTTY/config"
+	"go_test_PuTTY/utils"
 	"net/http"
 )
 
@@ -25,7 +26,7 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) error {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	fmt.Printf("%v", resp)
+	utils.LogInfo.Printf("%v", resp)
 	json.NewEncoder(w).Encode(resp)
 	return nil
 }
