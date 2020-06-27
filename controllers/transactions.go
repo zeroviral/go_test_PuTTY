@@ -12,16 +12,11 @@ import (
 
 // ENDPOINT: ("/get_transaction")
 // ACCEPTS: GET
-func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
+func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 	// validate current request
 	validRequest, err := validators.ValidateRequest(req)
 	if err != nil {
-		errMsg := utils.GenerateError("Validation error has occurred", err)
-		utils.LogError.Print(errMsg)
-		fmt.Printf("%v", errMsg.Data)
-		h.WriteHeader(422)
-		json.NewEncoder(h).Encode(fmt.Sprint(errMsg))
-		return
+		return utils.NewHTTPError(nil, 405, "Invalid Request Format")
 	}
 	// convert to correct format
 	account := common.HexToAddress(validRequest.EthereumId)
@@ -33,12 +28,9 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
 		Message:    fmt.Sprintf("The current Etehreum balance is %s", balance),
 	}
 	// Finally, write the new payload to the response object.
-	newErr := json.NewEncoder(h).Encode(response)
-	if newErr != nil {
-		generatedErr := utils.GenerateError("Error encoding JSON", newErr)
-		utils.LogError.Print(generatedErr)
-		response.Message = fmt.Sprint(generatedErr)
-		h.WriteHeader(422)
-		json.NewEncoder(h).Encode(response)
+	if err = json.NewEncoder(h).Encode(response); err != nil {
+		return fmt.Errorf("Unable to encode JSON response: %v", err)
 	}
+	h.WriteHeader(200)
+	return nil
 }
