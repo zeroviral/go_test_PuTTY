@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -40,5 +41,7 @@ func Init() {
 
 	// The errors will go to the log file for review on failures.
 	// TODO: Add a rotating file handler to handle max size overflow later...
-	LogError.SetOutput(logFile)
+	// Output log errors to both STDOUT and file for review.
+	multiWriter := io.MultiWriter(os.Stdout, logFile)
+	LogError.SetOutput(multiWriter)
 }
