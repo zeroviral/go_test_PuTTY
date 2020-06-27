@@ -15,15 +15,13 @@ var (
 	LogError   *log.Logger
 )
 
-func init() {
+func Init() {
 
 	// Logger logFile output stuff.
 	logFile, err := os.OpenFile(logDir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer logFile.Close()
-
 	LogTrace = log.New(ioutil.Discard,
 		"TRACE: ",
 		log.Ldate|log.Ltime)

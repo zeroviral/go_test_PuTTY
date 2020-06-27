@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	utils.Init()
 	cfg := config.CreateConfiguration()
 	router := mux.NewRouter().StrictSlash(true)
 	api.RegisterRoutes(router)

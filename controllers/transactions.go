@@ -14,7 +14,15 @@ import (
 // ACCEPTS: GET
 func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
 	// validate current request
-	validRequest := validators.GetCurrentEthBalance(req)
+	validRequest, err := validators.ValidateRequest(req)
+	if err != nil {
+		errMsg := utils.GenerateError("Validation error has occurred", err)
+		utils.LogError.Print(errMsg)
+		fmt.Printf("%v", errMsg.Data)
+		h.WriteHeader(422)
+		json.NewEncoder(h).Encode(fmt.Sprint(errMsg))
+		return
+	}
 	// convert to correct format
 	account := common.HexToAddress(validRequest.EthereumId)
 	// get balance
@@ -25,5 +33,12 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) {
 		Message:    fmt.Sprintf("The current Etehreum balance is %s", balance),
 	}
 	// Finally, write the new payload to the response object.
-	json.NewEncoder(h).Encode(response)
+	newErr := json.NewEncoder(h).Encode(response)
+	if newErr != nil {
+		generatedErr := utils.GenerateError("Error encoding JSON", newErr)
+		utils.LogError.Print(generatedErr)
+		response.Message = fmt.Sprint(generatedErr)
+		h.WriteHeader(422)
+		json.NewEncoder(h).Encode(response)
+	}
 }
