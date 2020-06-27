@@ -16,7 +16,7 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 	// validate current request
 	validRequest, err := validators.ValidateRequest(req)
 	if err != nil {
-		return utils.NewHTTPError(nil, 405, "Invalid Request Format")
+		return utils.NewHTTPError(err, 405, "Invalid Request Format")
 	}
 	// convert to correct format
 	account := common.HexToAddress(validRequest.EthereumId)

@@ -16,7 +16,7 @@ func (fn rootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Printf("An error occured: %v", err)
-	clientError, ok := err.(utils.ClientError)
+	clientError, ok := err.(utils.Error4XX)
 	if !ok {
 		// 500 internal server error
 		w.WriteHeader(500)
