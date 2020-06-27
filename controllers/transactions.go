@@ -10,13 +10,13 @@ import (
 	"net/http"
 )
 
-// ENDPOINT: ("/get_transaction")
+// ENDPOINT: ("/transactions")
 // ACCEPTS: GET
 func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 	// validate current request
 	validRequest, err := validators.ValidateRequest(req)
 	if err != nil {
-		return utils.NewHTTPError(err, 405, "Invalid Request Format")
+		return utils.NewError4XX(err, 405, "Invalid Request Format")
 	}
 	// convert to correct format
 	account := common.HexToAddress(validRequest.EthereumId)
@@ -31,6 +31,5 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 	if err = json.NewEncoder(h).Encode(response); err != nil {
 		return fmt.Errorf("Unable to encode JSON response: %v", err)
 	}
-	h.WriteHeader(200)
 	return nil
 }

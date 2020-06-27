@@ -15,19 +15,19 @@ func (fn RootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Printf("An error occured: %v", err)
-	clientError, ok := err.(utils.Error4XX)
+	error4XX, ok := err.(utils.IError4XX)
 	if !ok {
 		// 500 internal server error
 		w.WriteHeader(500)
 		return
 	}
-	body, err := clientError.ResponseBody()
+	body, err := error4XX.ResponseBody()
 	if err != nil {
 		log.Printf("An error occured internally: %v", err)
 		w.WriteHeader(500)
 		return
 	}
-	status, headers := clientError.ResponseHeaders() // Get http status code and headers.
+	status, headers := error4XX.ResponseHeaders() // Get http status code and headers.
 	for k, v := range headers {
 		w.Header().Set(k, v)
 	}
