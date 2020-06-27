@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"go_test_PuTTY/config"
 	"go_test_PuTTY/utils"
 	"net/http"
