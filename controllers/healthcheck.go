@@ -26,9 +26,5 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	fmt.Printf("%v", resp)
-	//respJSON, err := json.Marshal(resp)
-	//if err != nil {
-	//	// handle error
-	//}
 	json.NewEncoder(w).Encode(resp)
 }
