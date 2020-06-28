@@ -15,7 +15,9 @@ func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
 	// JSON parsing Validation
 	var validRequest resources.EthereumRequest
 	dec := json.NewDecoder(req.Body)
+	// This will disallow any fields not defined in the schema, down to the tags.
 	dec.DisallowUnknownFields()
+	// Now just put the decoded JSON into the request format.
 	err := dec.Decode(&validRequest)
 	if err != nil {
 		return validRequest, fmt.Errorf("incorrect request format. please check your inputs")
