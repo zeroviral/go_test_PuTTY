@@ -14,25 +14,33 @@ import (
 func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
 	// JSON parsing Validation
 	var validRequest resources.EthereumRequest
+	var requestSchema resources.EthereumRequest
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields()
 	err := dec.Decode(&validRequest)
 	if err != nil {
-		fmt.Printf("An error occured decoding the json %v", err)
 		return validRequest, fmt.Errorf("incorrect request format. please check your inputs")
 	}
 	// Schema enforcement validation
+	if _, err = ValidateSchema(requestSchema, validRequest); err != nil  {
+		return validRequest, err
+	}
+	return validRequest, nil
+}
+
+func ValidateSchema(validRequest interface{}) (bool, error) {
+
 	validate := validator.New()
-	err = validate.Struct(validRequest)
+	err := validate.Struct(validRequest)
 	if err != nil {
 		var errors strings.Builder
 		for _, err := range err.(validator.ValidationErrors) {
 			utils.LogError.Printf("%v\n", err)
 			errors.WriteString(err.Field())
 		}
-		return validRequest, fmt.Errorf("failed to validate on the following fields: %s", errors.String())
+		return false, fmt.Errorf("error on schema validation %s", errors.String())
 	}
-	return validRequest, nil
+		return true, nil
 }
 
 // Validates a request is of a valid expected action.

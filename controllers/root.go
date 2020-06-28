@@ -41,7 +41,7 @@ func (httpHandler RootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		w.Header().Set(k, v)
 	}
 	// Globally logging all errors
-	utils.LogError.Printf("Code %v %s %s %v txID:[%s]", status, r.Method, r.RequestURI, string(body), r.Context().Value("transactionID"))
+	utils.LogError.Printf("Code %v %s %s %v txID:[%s]", status, r.Method, r.RequestURI, string(body), r.Context().Value("txID"))
 	// Headers & Body propagate from error util generator --> write to response
 	w.WriteHeader(status)
 	w.Write(body)

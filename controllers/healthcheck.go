@@ -2,9 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"go_test_PuTTY/config"
-	"go_test_PuTTY/validators"
 	"net/http"
 )
 
@@ -17,10 +15,6 @@ type HealthCheckResponse struct {
 
 // HealthCheck Endpoint
 func HealthCheck(w http.ResponseWriter, r *http.Request) error {
-	if !validators.ValidateRequestAction(r, "GET") {
-		errMsg := "could not validate request at /health "
-		return errors.New(errMsg)
-	}
 	cfg := config.CreateConfiguration()
 	resp := HealthCheckResponse{
 		Name:    cfg.App.Name,
