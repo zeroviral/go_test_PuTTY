@@ -6,21 +6,24 @@ import (
 	"github.com/go-playground/validator/v10"
 	"go_test_PuTTY/resources"
 	"go_test_PuTTY/utils"
-	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
-// TODO: move all validation logic to single aggregator function
+// TODO: Decouple JSON parse validation logic with schema validation.
 func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
+	// JSON parsing Validation
 	var validRequest resources.EthereumRequest
-	body, _ := ioutil.ReadAll(req.Body)
-	if err := json.Unmarshal(body, &validRequest); err != nil {
-		utils.LogError.Println("Invalid Request Format. Unable to unmarshal JSON.")
-		return validRequest, err
+	dec := json.NewDecoder(req.Body)
+	dec.DisallowUnknownFields()
+	err := dec.Decode(&validRequest)
+	if err != nil {
+		fmt.Printf("An error occured decoding the json %v", err)
+		return validRequest, fmt.Errorf("Incorrect request format. Please check your inputs.")
 	}
+	// Schema enforcement validation
 	validate := validator.New()
-	err := validate.Struct(validRequest)
+	err = validate.Struct(validRequest)
 	if err != nil {
 		var errors strings.Builder
 		for _, err := range err.(validator.ValidationErrors) {
@@ -38,8 +41,4 @@ func ValidateRequestAction(req *http.Request, allowedAction string) bool {
 		return false
 	}
 	return true
-}
-
-func ValidateSchema(req *http.Request, schema interface{}) {
-	return
 }
