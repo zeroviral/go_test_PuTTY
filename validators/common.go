@@ -22,7 +22,7 @@ func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
 		return validRequest, fmt.Errorf("incorrect request format. please check your inputs")
 	}
 	// Schema enforcement validation
-	if _, err = ValidateSchema(requestSchema, validRequest); err != nil  {
+	if _, err = ValidateSchema(validRequest); err != nil  {
 		return validRequest, err
 	}
 	return validRequest, nil
