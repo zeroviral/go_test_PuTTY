@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+var logDir = "resources/logs"
 var errorLogdir = "resources/logs/errors.log"
 var infoLogDir = "resources/logs/info.log"
 
@@ -20,6 +21,9 @@ var (
 func Init() {
 
 	// Logger logFile output stuff.
+	if _, err := os.Stat("resources/logs"); os.IsNotExist(err) {
+		os.Mkdir(logDir, 0700)
+	}
 	logErrorFile, err := os.OpenFile(errorLogdir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	logInfoFile, err := os.OpenFile(infoLogDir, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
