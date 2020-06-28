@@ -21,15 +21,15 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 	// validate current request
 	validRequest, err := validators.ValidateRequest(req)
 	if err != nil {
-		return utils.NewError4XX(err, 405, "Invalid Request Format")
+		return utils.NewError4XX(err, 405, err.Error())
 	}
 	// convert to correct format
-	account := common.HexToAddress(validRequest.EthereumId)
+	account := common.HexToAddress(validRequest.EID)
 	// get balance
 	balance := utils.GetBalanceByTransactionID(account)
-	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", validRequest.EthereumId)
+	utils.LogInfo.Printf("The received ethereum request ID is: [ %s ]", validRequest.EID)
 	response := resources.EthereumResponse{
-		EthereumId: validRequest.EthereumId,
+		EthereumId: validRequest.EID,
 		Message:    fmt.Sprintf("The current Etehreum balance is %s", balance),
 	}
 	// Finally, write the new payload to the response object.
