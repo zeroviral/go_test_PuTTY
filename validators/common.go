@@ -14,7 +14,6 @@ import (
 func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
 	// JSON parsing Validation
 	var validRequest resources.EthereumRequest
-	var requestSchema resources.EthereumRequest
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields()
 	err := dec.Decode(&validRequest)
