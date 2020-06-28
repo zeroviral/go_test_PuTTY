@@ -13,7 +13,6 @@ import (
 // ENDPOINT: ("/transactions")
 // ACCEPTS: GET
 func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
-
 	// First, validate that it's even a GET request.
 	if !validators.ValidateRequestAction(req, `GET`) {
 		errMsg := "only GET method is supported "
