@@ -25,7 +25,7 @@ func (fn RootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	body, err := error4XX.ResponseBody()
 	if err != nil {
-		utils.LogError.Printf( "An error occured internally: %v", err)
+		utils.LogError.Printf("An error occured internally: %v", err)
 		if w.Header() == nil {
 			w.WriteHeader(500)
 		}
@@ -35,7 +35,7 @@ func (fn RootHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for k, v := range headers {
 		w.Header().Set(k, v)
 	}
-	utils.LogError.Printf("Code %v %s %s %v", status, r.Method, r.RequestURI, string(body))
+	utils.LogError.Printf("Code %v %s %s %v txID:[%s]", status, r.Method, r.RequestURI, string(body), r.Context().Value("transactionID"))
 	w.WriteHeader(status)
 	w.Write(body)
 }

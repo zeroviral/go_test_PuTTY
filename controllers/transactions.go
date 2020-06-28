@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/ethereum/go-ethereum/common"
 	"go_test_PuTTY/resources"
@@ -16,11 +15,10 @@ import (
 func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 
 	// First, validate that it's even a GET request.
-	if !validators.ValidateRequestAction(h, req, `GET`) {
-		errMsg := "could not validate request at /transactions "
-		return errors.New(errMsg)
+	if !validators.ValidateRequestAction(req, `GET`) {
+		errMsg := "only GET method is supported "
+		return utils.NewError4XX(nil, 405, errMsg)
 	}
-
 	// validate current request
 	validRequest, err := validators.ValidateRequest(req)
 	if err != nil {
