@@ -19,7 +19,7 @@ func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
 	err := dec.Decode(&validRequest)
 	if err != nil {
 		fmt.Printf("An error occured decoding the json %v", err)
-		return validRequest, fmt.Errorf("Incorrect request format. Please check your inputs.")
+		return validRequest, fmt.Errorf("incorrect request format. please check your inputs")
 	}
 	// Schema enforcement validation
 	validate := validator.New()
@@ -28,9 +28,9 @@ func ValidateRequest(req *http.Request) (resources.EthereumRequest, error) {
 		var errors strings.Builder
 		for _, err := range err.(validator.ValidationErrors) {
 			utils.LogError.Printf("%v\n", err)
-			errors.WriteString(err.Field() + ":" + err.ActualTag() + ", ")
+			errors.WriteString(err.Field())
 		}
-		return validRequest, fmt.Errorf("Failed to validate on the following fields: %s", errors.String())
+		return validRequest, fmt.Errorf("failed to validate on the following fields: %s", errors.String())
 	}
 	return validRequest, nil
 }
