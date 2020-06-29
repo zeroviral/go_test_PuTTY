@@ -13,7 +13,6 @@ import (
 // ENDPOINT: ("/transactions")
 // ACCEPTS: GET_Transactions
 func TransactionsGET(h http.ResponseWriter, req *http.Request) error {
-
 	// Offload the bulk of the validation initially.
 	validRequest, err := validate.TransactionsGET(req)
 	if err != nil {
