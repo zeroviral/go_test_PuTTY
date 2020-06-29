@@ -10,14 +10,14 @@ import (
 )
 
 // This will conform our request structure.
-type EthereumRequest struct {
+type TransactionsSchemaGET struct {
 
 	// The field that will be accepted on the left, and the right is the response formatted fields.
 	EID string `json:"eID" validate:"required,gt=38,lt=43"`
 }
 
 // This holds our definition of a list that can hold multiple ethereum requests.
-type EthereumRequestList []EthereumRequest
+type EthereumRequestList []TransactionsSchemaGET
 
 type EthereumResponse struct {
 	EthereumId string `json:"eID"`
@@ -25,7 +25,17 @@ type EthereumResponse struct {
 }
 
 
-func (e *EthereumRequest) ValidateJSON (req *http.Request) error {
+func (e *TransactionsSchemaGET) ValidateRequest (req *http.Request) error {
+	if err := e.ValidateJSON(req); err != nil {
+		return err
+	}
+	if err := e.ValidateSchema(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *TransactionsSchemaGET) ValidateJSON (req *http.Request) error {
 	dec := json.NewDecoder(req.Body)
 	dec.DisallowUnknownFields()
 	err := dec.Decode(e)
@@ -35,7 +45,7 @@ func (e *EthereumRequest) ValidateJSON (req *http.Request) error {
 	return nil
 }
 
-func (e *EthereumRequest) ValidateSchema () error {
+func (e *TransactionsSchemaGET) ValidateSchema () error {
 	validate := validator.New()
 	err := validate.Struct(e)
 	if err != nil {

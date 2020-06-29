@@ -6,20 +6,14 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"go_test_PuTTY/resources"
 	"go_test_PuTTY/utils"
-	"go_test_PuTTY/validators"
+	validate "go_test_PuTTY/validators"
 	"net/http"
 )
 
 // ENDPOINT: ("/transactions")
-// ACCEPTS: GET
-func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
-	// First, validate that it's even a GET request.
-	if !validators.ValidateRequestAction(req, `GET`) {
-		errMsg := "only GET method is supported "
-		return utils.NewError4XX(nil, 405, errMsg)
-	}
-	// validate current request
-	validRequest, err := validators.ValidateRequest(req)
+// ACCEPTS: GET_Transactions
+func TransactionsGET(h http.ResponseWriter, req *http.Request) error {
+	validRequest, err := validate.TransactionsGET(req)
 	if err != nil {
 		return utils.NewError4XX(err, 405, err.Error())
 	}
@@ -37,4 +31,16 @@ func GetCurrentEthBalance(h http.ResponseWriter, req *http.Request) error {
 		return fmt.Errorf("Unable to encode JSON response: %v", err)
 	}
 	return nil
+}
+
+
+// Validating all routes in this higher level function that routes to appropriate handler.
+// Currently supporting --> GET_Transactions
+func TransactionsHandler(h http.ResponseWriter, req *http.Request) error {
+	switch method := req.Method; method {
+	case "GET":
+	return TransactionsGET(h,req)
+	default:
+		return utils.NewError4XX(nil, 405, "please use a supported method")
+	}
 }
